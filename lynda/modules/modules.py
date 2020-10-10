@@ -1,6 +1,6 @@
 import importlib
 
-from telegram import Bot, Update, ParseMode
+from telegram import Update, ParseMode
 from telegram.ext import CommandHandler, run_async
 
 from lynda import dispatcher
@@ -19,7 +19,7 @@ from lynda.modules.helper_funcs.chat_status import sudo_plus, dev_plus
 
 @run_async
 @dev_plus
-def load(_bot: Bot, update: Update):
+def load(update: Update, _):
     message = update.effective_message
     text = message.text.split(" ", 1)[1]
     load_messasge = message.reply_text(
@@ -35,7 +35,7 @@ def load(_bot: Bot, update: Update):
     if not hasattr(imported_module, "__mod_name__"):
         imported_module.__mod_name__ = imported_module.__name__
 
-    if not imported_module.__mod_name__.lower() in IMPORTED:
+    if imported_module.__mod_name__.lower() not in IMPORTED:
         IMPORTED[imported_module.__mod_name__.lower()] = imported_module
     else:
         load_messasge.edit_text("Module already loaded.")
@@ -85,7 +85,7 @@ def load(_bot: Bot, update: Update):
 
 @run_async
 @dev_plus
-def unload(_bot: Bot, update: Update):
+def unload(update: Update, _):
     message = update.effective_message
     text = message.text.split(" ", 1)[1]
     unload_messasge = message.reply_text(
@@ -152,7 +152,7 @@ def unload(_bot: Bot, update: Update):
 
 @run_async
 @sudo_plus
-def listmodules(_bot: Bot, update: Update):
+def listmodules(update: Update, _):
     message = update.effective_message
     module_list = []
 
